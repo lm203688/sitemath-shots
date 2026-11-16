@@ -22,7 +22,7 @@ udid_of() {
 }
 
 resolve() {
-  for c in "iPhone 16 Pro Max" "iPhone 15 Pro Max" "iPhone 16 Plus" "iPhone 15 Plus" "iPhone 16 Pro" "iPhone 15 Pro" "iPhone 16" "iPhone 15"; do
+  for c in "iPhone 17 Pro Max" "iPhone 16 Pro Max" "iPhone 17 Plus" "iPhone 15 Pro Max" "iPhone 17 Pro" "iPhone 16 Pro" "iPhone 17" "iPhone 16" "iPhone 15"; do
     u=$(udid_of "$c")
     if [ -n "$u" ]; then echo "$c|$u"; return; fi
   done
@@ -32,7 +32,7 @@ resolve() {
 mkdir -p shots
 BIG=$(resolve)
 SMALL=""
-for c in "iPhone 16 Pro" "iPhone 15 Pro" "iPhone 16" "iPhone 15" "iPhone 16e" "iPhone SE (3rd generation)"; do
+for c in "iPhone 17" "iPhone 16e" "iPhone 16" "iPhone 15"; do
   u=$(udid_of "$c")
   if [ -n "$u" ]; then SMALL="$c|$u"; break; fi
 done
@@ -52,7 +52,10 @@ shoot() {
   xcrun simctl status_bar "$DEV" override --time "9:41" --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
   xcrun simctl install "$DEV" "$APP" || { echo "install failed"; return 0; }
   xcrun simctl launch "$DEV" com.lixing.sitemath || true
-  sleep 6
+  sleep 8
+  echo "== hierarchy dump ($TAG) =="
+  maestro hierarchy > "shots/hier_$TAG.txt" 2>&1 || true
+  head -c 4000 "shots/hier_$TAG.txt" || true
   maestro test --test-output-dir "$PWD/out_$TAG" flow.yaml > "shots/log_$TAG.txt" 2>&1 || true
   tail -40 "shots/log_$TAG.txt"
   find "out_$TAG" -name "*.png" 2>/dev/null | while read -r f; do cp "$f" "shots/${TAG}_$(basename "$f")"; done
