@@ -53,18 +53,19 @@ shoot() {
   xcrun simctl install "$DEV" "$APP" || { echo "install failed"; return 0; }
   xcrun simctl launch "$DEV" com.lixing.sitemath || true
   sleep 8
-  echo "== hierarchy dump ($TAG) =="
+  echo "== hierarchy dump before ($TAG) =="
   maestro hierarchy > "shots/hier_$TAG.txt" 2>&1 || true
-  head -c 4000 "shots/hier_$TAG.txt" || true
   maestro test --test-output-dir "$PWD/out_$TAG" flow.yaml > "shots/log_$TAG.txt" 2>&1 || true
-  tail -40 "shots/log_$TAG.txt"
+  tail -60 "shots/log_$TAG.txt"
+  echo "== hierarchy dump after ($TAG) =="
+  maestro hierarchy > "shots/hier_after_$TAG.txt" 2>&1 || true
   find "out_$TAG" -name "*.png" 2>/dev/null | while read -r f; do cp "$f" "shots/${TAG}_$(basename "$f")"; done
   xcrun simctl uninstall "$DEV" com.lixing.sitemath || true
   xcrun simctl shutdown "$DEV" || true
 }
 
 shoot "$BIG_NAME" "$BIG_UDID" "big"
-shoot "$SMALL_NAME" "$SMALL_UDID" "small"
+if [ "${SKIP_SMALL:-1}" = "0" ]; then shoot "$SMALL_NAME" "$SMALL_UDID" "small"; else echo "skip small (probe mode)"; fi
 
 echo "== result =="
 ls -la shots
