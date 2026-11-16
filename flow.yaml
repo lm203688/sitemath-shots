@@ -68,7 +68,7 @@ appId: com.lixing.sitemath
     text: "^each$"
     index: 0
 - inputText: "4.50"
-- hideKeyboard
+- tapOn: "^Job takeoff$"
 - takeScreenshot: 05_job_total
 - tapOn: ".*Back"
 - extendedWaitUntil:
