@@ -1,11 +1,14 @@
 #!/bin/bash
 set -uo pipefail
 
+SIM_URL="${SIM_URL:-https://expo.dev/artifacts/eas/2GfHMCst2pVra1E_6hKFsi9a3MyraFnildyeHxHjV00.tar.gz}"
+BUNDLE_ID="com.lixing.hvacfieldcalc"
+
 echo "== fetch simulator build =="
-curl -fL -o sim.tar.gz "https://expo.dev/artifacts/eas/4gSgl9m1ngCMsOweAvPLJGwfXOcM3Ir4Aso7heQWrs8.tar.gz" || exit 1
+curl -fL -o sim.tar.gz "$SIM_URL" || exit 1
 mkdir -p build
 tar -xzf sim.tar.gz -C build || exit 1
-APP=$(find build -maxdepth 4 -name "SiteMath.app" | head -1)
+APP=$(find build -maxdepth 5 -name "*.app" | head -1)
 echo "APP=$APP"
 [ -d "$APP" ] || exit 1
 
@@ -22,7 +25,7 @@ udid_of() {
 }
 
 resolve() {
-  for c in "iPhone 17 Pro Max" "iPhone 16 Pro Max" "iPhone 17 Plus" "iPhone 15 Pro Max" "iPhone 17 Pro" "iPhone 16 Pro" "iPhone 17" "iPhone 16" "iPhone 15"; do
+  for c in "iPhone 17 Pro Max" "iPhone 16 Pro Max" "iPhone 17 Plus" "iPhone 15 Pro Max" "iPhone 17 Pro" "iPhone 16 Pro" "iPhone 17" "iPhone 16"; do
     u=$(udid_of "$c")
     if [ -n "$u" ]; then echo "$c|$u"; return; fi
   done
@@ -31,17 +34,9 @@ resolve() {
 
 mkdir -p shots
 BIG=$(resolve)
-SMALL=""
-for c in "iPhone 17" "iPhone 16e" "iPhone 16" "iPhone 15"; do
-  u=$(udid_of "$c")
-  if [ -n "$u" ]; then SMALL="$c|$u"; break; fi
-done
 BIG_NAME=${BIG%%|*}
 BIG_UDID=${BIG##*|}
-SMALL_NAME=${SMALL%%|*}
-SMALL_UDID=${SMALL##*|}
 echo "big=$BIG_NAME $BIG_UDID"
-echo "small=$SMALL_NAME $SMALL_UDID"
 
 shoot() {
   local NAME="$1" DEV="$2" TAG="$3"
@@ -51,21 +46,20 @@ shoot() {
   xcrun simctl bootstatus "$DEV" -b || true
   xcrun simctl status_bar "$DEV" override --time "9:41" --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
   xcrun simctl install "$DEV" "$APP" || { echo "install failed"; return 0; }
-  xcrun simctl launch "$DEV" com.lixing.sitemath || true
+  xcrun simctl launch "$DEV" "$BUNDLE_ID" || true
   sleep 8
-  echo "== hierarchy dump before ($TAG) =="
-  maestro hierarchy > "shots/hier_$TAG.txt" 2>&1 || true
+  maestro hierarchy > "shots/hier_before_$TAG.txt" 2>&1 || true
   maestro test --test-output-dir "$PWD/out_$TAG" flow.yaml > "shots/log_$TAG.txt" 2>&1 || true
-  tail -60 "shots/log_$TAG.txt"
-  echo "== hierarchy dump after ($TAG) =="
+  tail -80 "shots/log_$TAG.txt"
   maestro hierarchy > "shots/hier_after_$TAG.txt" 2>&1 || true
-  find "out_$TAG" -name "*.png" 2>/dev/null | while read -r f; do cp "$f" "shots/${TAG}_$(basename "$f")"; done
-  xcrun simctl uninstall "$DEV" com.lixing.sitemath || true
+  find "out_$TAG" -name "*.png" 2>/dev/null | while read -r f; do
+    cp "$f" "shots/${TAG}_$(basename "$f")"
+  done
+  xcrun simctl uninstall "$DEV" "$BUNDLE_ID" || true
   xcrun simctl shutdown "$DEV" || true
 }
 
 shoot "$BIG_NAME" "$BIG_UDID" "big"
-if [ "${SKIP_SMALL:-1}" = "0" ]; then shoot "$SMALL_NAME" "$SMALL_UDID" "small"; else echo "skip small (probe mode)"; fi
 
 echo "== result =="
 ls -la shots
