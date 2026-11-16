@@ -60,16 +60,7 @@ appId: com.lixing.sitemath
 - extendedWaitUntil:
     visible: "^Job takeoff$"
     timeout: 30000
-- tapOn:
-    text: "^each$"
-    index: 0
-- inputText: "24.99"
-- tapOn:
-    text: "^each$"
-    index: 0
-- inputText: "4.50"
-- tapOn: "^Job takeoff$"
-- takeScreenshot: 05_job_total
+- takeScreenshot: 05_job_list
 - tapOn: ".*Back"
 - extendedWaitUntil:
     visible: "^CONCRETE$"
