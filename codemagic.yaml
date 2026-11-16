@@ -1,0 +1,54 @@
+workflows:
+  sitemath-shots:
+    name: SiteMath simulator screenshots
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      vars:
+        EAS_ARTIFACT: "https://expo.dev/artifacts/eas/4gSgl9m1ngCMsOweAvPLJGwfXOcM3Ir4Aso7heQWrs8.tar.gz"
+    scripts:
+      - name: Install Maestro
+        script: |
+          set -e
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          "$HOME/.maestro/bin/maestro" --version
+      - name: Boot simulator and install app
+        script: |
+          set -e
+          mkdir -p shots
+          curl -Ls -o sim.tar.gz "$EAS_ARTIFACT"
+          tar -xzf sim.tar.gz -C .
+          APP_DIR=$(ls -d *.app | head -1)
+          echo "app: $APP_DIR"
+          UDID=$(python3 - <<'PY'
+import json, subprocess
+d = json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]).decode())
+best = None
+for runtime, devs in d["devices"].items():
+    for dev in devs:
+        name = dev.get("name","")
+        if name.startswith("iPhone") and dev.get("isAvailable"):
+            best = best or dev
+for runtime, devs in d["devices"].items():
+    for dev in devs:
+        if dev.get("name","").startswith("iPhone") and dev.get("isAvailable") and "Pro Max" in dev["name"]:
+            best = dev
+print(best["udid"])
+PY
+)
+          echo "udid: $UDID"
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" "$APP_DIR"
+          xcrun simctl ui "$UDID" appearance light
+          echo "$UDID" > shots/udid.txt
+      - name: Run Maestro flow
+        script: |
+          set -u
+          export PATH="$HOME/.maestro/bin:$PATH"
+          UDID=$(cat shots/udid.txt)
+          maestro --device "$UDID" test flow.yaml || true
+          ls -la *.png || true
+    artifacts:
+      - "*.png"
+      - "shots/**/*.txt"
