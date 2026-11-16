@@ -11,5 +11,75 @@ appId: com.lixing.sitemath
     visible: "^Result$"
     timeout: 30000
 - takeScreenshot: 02_slab_us
-- tapOn: ".*Metric.*"
-- takeScreenshot: 03_metric_probe
+- tapOn: ".*Back"
+- extendedWaitUntil:
+    visible: "^CONCRETE$"
+    timeout: 30000
+- tapOn: "^Metric$"
+- tapOn: "^Rectangular slab.*"
+- extendedWaitUntil:
+    visible: "^Result$"
+    timeout: 30000
+- takeScreenshot: 03_slab_metric
+- tapOn: ".*Back"
+- extendedWaitUntil:
+    visible: "^CONCRETE$"
+    timeout: 30000
+- tapOn: "^US$"
+- scrollUntilVisible:
+    element: "^Tile.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "^Tile.*"
+- extendedWaitUntil:
+    visible: "^Result$"
+    timeout: 30000
+- takeScreenshot: 04_tile
+- scrollUntilVisible:
+    element: "^Add to job takeoff$"
+    direction: DOWN
+    timeout: 20000
+- tapOn: "^Add to job takeoff$"
+- tapOn: ".*Back"
+- extendedWaitUntil:
+    visible: "^CONCRETE$"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "^Rectangular slab.*"
+    direction: UP
+    timeout: 30000
+- tapOn: "^Rectangular slab.*"
+- extendedWaitUntil:
+    visible: "^Result$"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "^Add to job takeoff$"
+    direction: DOWN
+    timeout: 20000
+- tapOn: "^Add to job takeoff$"
+- extendedWaitUntil:
+    visible: "^Job takeoff$"
+    timeout: 30000
+- tapOn:
+    text: "^each$"
+    index: 0
+- inputText: "24.99"
+- tapOn:
+    text: "^each$"
+    index: 0
+- inputText: "4.50"
+- hideKeyboard
+- takeScreenshot: 05_job_total
+- tapOn: ".*Back"
+- extendedWaitUntil:
+    visible: "^CONCRETE$"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "^Feet.*inch.*fraction.*"
+    direction: DOWN
+    timeout: 40000
+- tapOn: "^Feet.*inch.*fraction.*"
+- extendedWaitUntil:
+    visible: "^Result$"
+    timeout: 30000
+- takeScreenshot: 06_length_math
