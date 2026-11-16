@@ -1,76 +1,42 @@
-appId: com.lixing.sitemath
+appId: com.lixing.hvacfieldcalc
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: "^Rectangular slab.*"
-    timeout: 60000
+- launchApp
+- waitForAnimationToEnd
 - takeScreenshot: 01_tools
-- tapOn: "^Rectangular slab.*"
-- extendedWaitUntil:
-    visible: "^Result$"
-    timeout: 30000
-- takeScreenshot: 02_slab_us
-- tapOn: ".*Back"
-- extendedWaitUntil:
-    visible: "^CONCRETE$"
-    timeout: 30000
-- tapOn: "^Metric$"
-- tapOn: "^Rectangular slab.*"
-- extendedWaitUntil:
-    visible: "^Result$"
-    timeout: 30000
-- takeScreenshot: 03_slab_metric
-- tapOn: ".*Back"
-- extendedWaitUntil:
-    visible: "^CONCRETE$"
-    timeout: 30000
-- tapOn: "^US$"
+- tapOn: "Duct size for airflow"
+- takeScreenshot: 02_duct_size
+- tapOn: "Add to job sheet"
+- tapOn: "‹ Back"
 - scrollUntilVisible:
-    element: "^Tile.*"
-    direction: DOWN
-    timeout: 30000
-- tapOn: "^Tile.*"
-- extendedWaitUntil:
-    visible: "^Result$"
-    timeout: 30000
-- takeScreenshot: 04_tile
-- scrollUntilVisible:
-    element: "^Add to job takeoff$"
+    element:
+      text: "Superheat"
     direction: DOWN
     timeout: 20000
-- tapOn: "^Add to job takeoff$"
-- tapOn: ".*Back"
-- extendedWaitUntil:
-    visible: "^CONCRETE$"
-    timeout: 30000
+- tapOn: "Superheat"
+- takeScreenshot: 03_superheat
+- tapOn: "Add to job sheet"
+- tapOn: "‹ Back"
 - scrollUntilVisible:
-    element: "^Rectangular slab.*"
+    element:
+      text: "Ampacity & breaker"
+    direction: DOWN
+    timeout: 20000
+- tapOn: "Ampacity & breaker"
+- takeScreenshot: 04_ampacity
+- tapOn: "‹ Back"
+- scrollUntilVisible:
+    element:
+      text: "Gas pipe sizing"
+    direction: DOWN
+    timeout: 20000
+- tapOn: "Gas pipe sizing"
+- takeScreenshot: 05_gas_pipe
+- tapOn: "Add to job sheet"
+- tapOn: "‹ Back"
+- scrollUntilVisible:
+    element:
+      text: "Job sheet"
     direction: UP
-    timeout: 30000
-- tapOn: "^Rectangular slab.*"
-- extendedWaitUntil:
-    visible: "^Result$"
-    timeout: 30000
-- scrollUntilVisible:
-    element: "^Add to job takeoff$"
-    direction: DOWN
     timeout: 20000
-- tapOn: "^Add to job takeoff$"
-- extendedWaitUntil:
-    visible: "^Job takeoff$"
-    timeout: 30000
-- takeScreenshot: 05_job_list
-- tapOn: ".*Back"
-- extendedWaitUntil:
-    visible: "^CONCRETE$"
-    timeout: 30000
-- scrollUntilVisible:
-    element: "^Feet.*inch.*fraction.*"
-    direction: DOWN
-    timeout: 40000
-- tapOn: "^Feet.*inch.*fraction.*"
-- extendedWaitUntil:
-    visible: "^Result$"
-    timeout: 30000
-- takeScreenshot: 06_length_math
+- tapOn: "Job sheet"
+- takeScreenshot: 06_job_sheet
