@@ -3,54 +3,75 @@ appId: com.lixing.sitemath
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: 'Rectangular slab'
-    timeout: 40000
+    visible: "^Rectangular slab.*"
+    timeout: 60000
 - takeScreenshot: 01_tools
-- tapOn: 'Rectangular slab'
+- tapOn: "^Rectangular slab.*"
 - extendedWaitUntil:
-    visible: 'Result'
-    timeout: 25000
+    visible: "^Result$"
+    timeout: 30000
 - takeScreenshot: 02_slab_us
-- tapOn: 'Metric'
-- extendedWaitUntil:
-    visible: 'm³'
-    timeout: 20000
+- tapOn: "^Metric$"
 - takeScreenshot: 03_slab_metric
-- tapOn: 'US'
-- tapOn: '‹ Back'
+- tapOn: "^US$"
+- tapOn: ".*Back"
 - extendedWaitUntil:
-    visible: 'Masonry'
-    timeout: 20000
+    visible: "^MASONRY$"
+    timeout: 30000
 - scrollUntilVisible:
-    element: 'Tile'
+    element: "^Tile.*"
     direction: DOWN
     timeout: 30000
-- tapOn: 'Tile'
+- tapOn: "^Tile.*"
 - extendedWaitUntil:
-    visible: 'Add to job takeoff'
-    timeout: 25000
+    visible: "^Result$"
+    timeout: 30000
 - takeScreenshot: 04_tile
-- tapOn: 'Add to job takeoff'
-- extendedWaitUntil:
-    visible: 'Job takeoff'
-    timeout: 25000
-- tapOn: 'each'
-- inputText: '24.99'
-- hideKeyboard
-- extendedWaitUntil:
-    visible: 'Total'
-    timeout: 20000
-- takeScreenshot: 05_job_total
-- tapOn: '‹ Back'
-- extendedWaitUntil:
-    visible: 'Tools'
-    timeout: 20000
 - scrollUntilVisible:
-    element: 'Feet · inch · fraction'
+    element: "^Add to job takeoff$"
     direction: DOWN
-    timeout: 30000
-- tapOn: 'Feet · inch · fraction'
+    timeout: 20000
+- tapOn: "^Add to job takeoff$"
+- tapOn: ".*Back"
 - extendedWaitUntil:
-    visible: 'Result'
-    timeout: 25000
+    visible: "^CONCRETE$"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "^Rectangular slab.*"
+    direction: UP
+    timeout: 30000
+- tapOn: "^Rectangular slab.*"
+- extendedWaitUntil:
+    visible: "^Result$"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "^Add to job takeoff$"
+    direction: DOWN
+    timeout: 20000
+- tapOn: "^Add to job takeoff$"
+- extendedWaitUntil:
+    visible: "^Job takeoff$"
+    timeout: 30000
+- tapOn:
+    text: "^each$"
+    index: 0
+- inputText: "24.99"
+- tapOn:
+    text: "^each$"
+    index: 0
+- inputText: "4.50"
+- hideKeyboard
+- takeScreenshot: 05_job_total
+- tapOn: ".*Back"
+- extendedWaitUntil:
+    visible: "^CONCRETE$"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "^Feet.*inch.*fraction.*"
+    direction: DOWN
+    timeout: 40000
+- tapOn: "^Feet.*inch.*fraction.*"
+- extendedWaitUntil:
+    visible: "^Result$"
+    timeout: 30000
 - takeScreenshot: 06_length_math
