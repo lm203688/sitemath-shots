@@ -3,8 +3,8 @@ appId: com.lixing.hvacfieldcalc
 - launchApp
 - waitForAnimationToEnd
 - takeScreenshot: 01_tools
-- tapOn: "Duct size for airflow.*"
-- takeScreenshot: 02_duct_size
+- tapOn: "Airflow from duct size.*"
+- takeScreenshot: 02_duct_airflow
 - tapOn: "‹ Back"
 - scrollUntilVisible:
     element:
