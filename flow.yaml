@@ -33,6 +33,15 @@ appId: com.lixing.hvacfieldcalc
 - tapOn: "‹ Back"
 - scrollUntilVisible:
     element:
+      text: "Gas pipe sizing.*"
+    direction: DOWN
+    timeout: 20000
+- tapOn: "Gas pipe sizing.*"
+- waitForAnimationToEnd
+- tapOn: "Add to job sheet"
+- tapOn: "‹ Back"
+- scrollUntilVisible:
+    element:
       text: "Job sheet.*"
     direction: UP
     timeout: 20000
