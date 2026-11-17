@@ -5,45 +5,29 @@ appId: com.lixing.hvacfieldcalc
 - takeScreenshot: 01_tools
 - tapOn: "Airflow from duct size.*"
 - takeScreenshot: 02_duct_airflow
-- tapOn: "‹ Back"
-- scrollUntilVisible:
-    element:
-      text: "Superheat.*"
-    direction: DOWN
-    timeout: 20000
-- tapOn: "Superheat.*"
-- takeScreenshot: 03_superheat
-- tapOn: "‹ Back"
+- launchApp
+- waitForAnimationToEnd
+- tapOn: "Airflow from ΔT.*"
+- takeScreenshot: 03_airflow_dt
+- launchApp
+- waitForAnimationToEnd
 - scrollUntilVisible:
     element:
       text: "Ampacity & breaker.*"
     direction: DOWN
-    timeout: 20000
+    timeout: 30000
 - tapOn: "Ampacity & breaker.*"
 - takeScreenshot: 04_ampacity
-- tapOn: "‹ Back"
+- launchApp
+- waitForAnimationToEnd
 - scrollUntilVisible:
     element:
       text: "Charge adder.*"
     direction: DOWN
-    timeout: 20000
+    timeout: 30000
 - tapOn: "Charge adder.*"
 - takeScreenshot: 05_charge_adder
 - tapOn: "Add to job sheet"
 - tapOn: "‹ Back"
-- scrollUntilVisible:
-    element:
-      text: "Gas pipe sizing.*"
-    direction: DOWN
-    timeout: 20000
-- tapOn: "Gas pipe sizing.*"
-- waitForAnimationToEnd
-- tapOn: "Add to job sheet"
-- tapOn: "‹ Back"
-- scrollUntilVisible:
-    element:
-      text: "Job sheet.*"
-    direction: UP
-    timeout: 20000
-- tapOn: "Job sheet.*"
+- tapOn: "Job sheet"
 - takeScreenshot: 06_job_sheet
