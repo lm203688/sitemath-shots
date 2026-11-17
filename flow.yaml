@@ -5,7 +5,6 @@ appId: com.lixing.hvacfieldcalc
 - takeScreenshot: 01_tools
 - tapOn: "Duct size for airflow.*"
 - takeScreenshot: 02_duct_size
-- tapOn: "Add to job sheet.*"
 - tapOn: "‹ Back"
 - scrollUntilVisible:
     element:
@@ -14,7 +13,6 @@ appId: com.lixing.hvacfieldcalc
     timeout: 20000
 - tapOn: "Superheat.*"
 - takeScreenshot: 03_superheat
-- tapOn: "Add to job sheet.*"
 - tapOn: "‹ Back"
 - scrollUntilVisible:
     element:
@@ -26,12 +24,12 @@ appId: com.lixing.hvacfieldcalc
 - tapOn: "‹ Back"
 - scrollUntilVisible:
     element:
-      text: "Gas pipe sizing.*"
+      text: "Charge adder.*"
     direction: DOWN
     timeout: 20000
-- tapOn: "Gas pipe sizing.*"
-- takeScreenshot: 05_gas_pipe
-- tapOn: "Add to job sheet.*"
+- tapOn: "Charge adder.*"
+- takeScreenshot: 05_charge_adder
+- tapOn: "Add to job sheet"
 - tapOn: "‹ Back"
 - scrollUntilVisible:
     element:
